@@ -3,6 +3,8 @@ package com.mahiru.cloud.controller;
 import com.mahiru.cloud.entities.Pay;
 import com.mahiru.cloud.entities.PayDTO;
 import com.mahiru.cloud.service.PayService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/pay")
+@Tag(name = "支付微服务模块", description = "支付CRUD")
 public class PayController {
 
     @Resource
@@ -34,6 +37,7 @@ public class PayController {
      * @description addPay方法
      */
     @PostMapping("/add")
+    @Operation(summary = "新增", description = "新增支付流水方法,json串做参数")
     public String addPay(@RequestBody Pay pay) {
         log.info("addPay: {}", pay);
 
@@ -50,6 +54,7 @@ public class PayController {
      * @description deletePay方法
      */
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "删除", description = "删除支付流水方法")
     public Integer deletePay(@PathVariable("id") Integer id) {
         log.info("deletePayId: {}", id);
 
@@ -65,6 +70,7 @@ public class PayController {
      * @description updatePay方法
      */
     @PutMapping("/update")
+    @Operation(summary = "修改", description = "修改支付流水方法")
     public String updatePay(@RequestBody PayDTO payDTO) {
         log.info("updatePay: {}", payDTO);
 
@@ -84,6 +90,7 @@ public class PayController {
      * @description getById方法
      */
     @GetMapping("/get/{id}")
+    @Operation(summary = "按照ID查流水", description = "查询支付流水方法")
     public Pay getById(@PathVariable("id") Integer id) {
         log.info("getPayId: {}", id);
 
@@ -98,6 +105,7 @@ public class PayController {
      * @description getAll方法
      */
     @GetMapping("/get")
+    @Operation(summary = "查询所有流水", description = "查询所有支付流水方法")
     public List<Pay> getAll() {
         return payService.getAll();
     }
