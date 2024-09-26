@@ -2,6 +2,7 @@ package com.mahiru.cloud.controller;
 
 import com.mahiru.cloud.entities.Pay;
 import com.mahiru.cloud.entities.PayDTO;
+import com.mahiru.cloud.resp.ResultData;
 import com.mahiru.cloud.service.PayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,84 +30,87 @@ public class PayController {
     private PayService payService;
 
     /**
-     * @param pay Pay实体类
-     * @return java.lang.String
      * @author mahiru
-     * @date 2024/9/25 18:48
+     * @date 2024/9/26 13:36
      * @methodName addPay
-     * @description addPay方法
+     * @description 新增支付流水方法,json串做参数
+     * @param pay Pay实体类
+     * @return com.mahiru.cloud.resp.ResultData<java.lang.String>
      */
     @PostMapping("/add")
     @Operation(summary = "新增", description = "新增支付流水方法,json串做参数")
-    public String addPay(@RequestBody Pay pay) {
+    public ResultData<String> addPay(@RequestBody Pay pay) {
         log.info("addPay: {}", pay);
 
         int i = payService.add(pay);
-        return "addPay: " + i;
+        return ResultData.success("成功插入记录，返回值为： " + i);
     }
 
     /**
-     * @param id Pay实体类id
-     * @return java.lang.Integer
      * @author mahiru
-     * @date 2024/9/25 18:52
+     * @date 2024/9/26 13:39
      * @methodName deletePay
-     * @description deletePay方法
+     * @description 删除支付流水方法
+     * @param id Pay实体类id
+     * @return com.mahiru.cloud.resp.ResultData<java.lang.Integer>
      */
     @DeleteMapping("/delete/{id}")
     @Operation(summary = "删除", description = "删除支付流水方法")
-    public Integer deletePay(@PathVariable("id") Integer id) {
+    public ResultData<Integer> deletePay(@PathVariable("id") Integer id) {
         log.info("deletePayId: {}", id);
 
-        return payService.delete(id);
+        int i = payService.delete(id);
+        return ResultData.success(i);
     }
 
     /**
-     * @param payDTO PayDTO实体类
-     * @return java.lang.String
      * @author mahiru
-     * @date 2024/9/25 18:56
+     * @date 2024/9/26 13:41
      * @methodName updatePay
-     * @description updatePay方法
+     * @description 修改支付流水方法
+     * @param payDTO PayDTO实体类
+     * @return com.mahiru.cloud.resp.ResultData<java.lang.String>
      */
     @PutMapping("/update")
     @Operation(summary = "修改", description = "修改支付流水方法")
-    public String updatePay(@RequestBody PayDTO payDTO) {
+    public ResultData<String> updatePay(@RequestBody PayDTO payDTO) {
         log.info("updatePay: {}", payDTO);
 
         Pay pay = new Pay();
         BeanUtils.copyProperties(payDTO, pay);
 
         int i = payService.update(pay);
-        return "updatePay: " + i;
+        return ResultData.success("成功修改记录，返回值为: " + i);
     }
 
     /**
-     * @param id Pay实体类id
-     * @return com.mahiru.cloud.entities.Pay
      * @author mahiru
-     * @date 2024/9/25 20:11
+     * @date 2024/9/26 13:42
      * @methodName getById
-     * @description getById方法
+     * @description 按照ID查流水方法
+     * @param id Pay实体类id
+     * @return com.mahiru.cloud.resp.ResultData<com.mahiru.cloud.entities.Pay>
      */
     @GetMapping("/get/{id}")
     @Operation(summary = "按照ID查流水", description = "查询支付流水方法")
-    public Pay getById(@PathVariable("id") Integer id) {
+    public ResultData<Pay> getById(@PathVariable("id") Integer id) {
         log.info("getPayId: {}", id);
 
-        return payService.getById(id);
+        Pay pay = payService.getById(id);
+        return ResultData.success(pay);
     }
 
     /**
-     * @return java.util.List<com.mahiru.cloud.entities.Pay>
      * @author mahiru
-     * @date 2024/9/25 20:14
+     * @date 2024/9/26 13:43
      * @methodName getAll
-     * @description getAll方法
+     * @description 查询所有流水方法
+     * @return com.mahiru.cloud.resp.ResultData<java.util.List<com.mahiru.cloud.entities.Pay>>
      */
     @GetMapping("/get")
     @Operation(summary = "查询所有流水", description = "查询所有支付流水方法")
-    public List<Pay> getAll() {
-        return payService.getAll();
+    public ResultData<List<Pay>> getAll() {
+        List<Pay> payList = payService.getAll();
+        return ResultData.success(payList);
     }
 }
