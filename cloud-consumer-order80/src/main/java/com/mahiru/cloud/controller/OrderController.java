@@ -4,6 +4,7 @@ import com.mahiru.cloud.entities.PayDTO;
 import com.mahiru.cloud.resp.ResultData;
 import com.mahiru.cloud.resp.ReturnCodeEnum;
 import jakarta.annotation.Resource;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,8 +18,9 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @RequestMapping("/consumer/pay")
 public class OrderController {
-    // TODO 暂时写死后续改正
-    public static final String PAYMENT_SRV_URL = "http://localhost:8001";
+
+//    public static final String PAYMENT_SRV_URL = "http://localhost:8001";
+    public static final String PAYMENT_SRV_URL = "http://cloud-payment-service";
 
     @Resource
     private RestTemplate restTemplate;
@@ -72,7 +74,7 @@ public class OrderController {
      * @description 查询所有订单
      * @return com.mahiru.cloud.resp.ResultData
      */
-    @GetMapping()
+    @GetMapping("/get")
     public ResultData listOrder() {
         return restTemplate.getForObject(PAYMENT_SRV_URL + "/pay/get", ResultData.class);
     }
